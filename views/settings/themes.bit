@@ -15,10 +15,6 @@ echo Html::div_open( array('class'=>'twothird') );
 
 	echo Html::form_close();
 echo Html::div_close();
-
-echo Html::div_open( array('class'=>'onethird') );
-    include('admin/templates/default/includes/sidebar.bit');
-echo Html::div_close();
 ?>
 
 <?php

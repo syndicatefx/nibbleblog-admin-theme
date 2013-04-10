@@ -42,9 +42,6 @@ echo Html::div_open( array('class'=>'twothird') );
     }
 echo Html::div_close();
 
-echo Html::div_open( array('class'=>'onethird') );
-    include('admin/templates/default/includes/sidebar.bit');
-echo Html::div_close();
 ?>
 
 <script>
@@ -70,7 +67,6 @@ $(document).ready(function() {
 		{
 			self.attr("data-flag", "1");
 			self.html("<?php echo $_LANG['ARE_YOU_SURE'] ?>");
-			self.parent().parent().parent().css("opacity","0.8");
 		}
 	});
 

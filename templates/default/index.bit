@@ -42,7 +42,16 @@
 		<?php
 			// LAYOUT_VIEW defined on controller
 			include(PATH_ADMIN_VIEW . LAYOUT_VIEW);
+
+       		$disable_sidebar = array('dashboard', 'post');
+       
+       		if( (!in_array($url['controller'], $disable_sidebar) || $url['action']=='list')){
+       			echo '<div class="onethird">';
+               include('includes/sidebar.bit');
+               echo '</div>';
+           };
 		?>
+
 	</div>	
 
 </section>

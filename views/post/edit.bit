@@ -1,5 +1,5 @@
 <?php
-echo Html::div_open( array('class'=>'twothird') );
+echo Html::div_open( array('class'=>'centered') );
 	echo Html::form_open( array('id'=>'js_form', 'name'=>'form', 'method'=>'post') );
 
 		// TITLE
@@ -27,9 +27,5 @@ echo Html::div_open( array('class'=>'twothird') );
 		include('includes/buttons.bit');
 
 	echo Html::form_close();
-echo Html::div_close();
-
-echo Html::div_open( array('class'=>'onethird') );
-    include('admin/templates/default/includes/sidebar.bit');
 echo Html::div_close();
 ?>
