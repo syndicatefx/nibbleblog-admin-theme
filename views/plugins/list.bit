@@ -1,0 +1,26 @@
+<?php
+echo Html::div_open( array('class'=>'twothird') );
+	foreach($plugins_all as $obj)
+	{
+		echo Html::div_open( array('class'=>'plugin') );
+			echo Html::h4( array('content'=>$obj->get_name()) );
+			echo Html::p( array('content'=>$obj->get_description()) );
+			echo Html::div_open( array('class'=>'options'));
+			if(!$obj->is_installed())
+			{
+				echo Html::link( array('class'=>'install', 'href'=>HTML_PATH_ROOT.'admin.php?controller=plugins&amp;action=install&amp;plugin='.$obj->get_dir_name(), 'content'=>$_LANG['INSTALL']) );
+			}
+			else
+			{
+				echo Html::link( array('class'=>'config', 'href'=>HTML_PATH_ROOT.'admin.php?controller=plugins&amp;action=config&amp;plugin='.$obj->get_dir_name(), 'content'=>$_LANG['CONFIGURE']) );
+				echo Html::link( array('class'=>'uninstall', 'href'=>HTML_PATH_ROOT.'admin.php?controller=plugins&amp;action=uninstall&amp;plugin='.$obj->get_dir_name(), 'content'=>$_LANG['UNINSTALL']) );
+			}
+			echo Html::div_close();
+		echo Html::div_close();
+	}
+echo Html::div_close();
+
+echo Html::div_open( array('class'=>'onethird') );
+    include('admin/templates/default/includes/sidebar.bit');
+echo Html::div_close();
+?>

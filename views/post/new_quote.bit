@@ -1,0 +1,22 @@
+<?php
+echo Html::div_open( array('class'=>'centered') );
+	echo Html::form_open( array('id'=>'js_form', 'name'=>'form', 'method'=>'post') );
+
+		// QUOTE
+		include('includes/quote.bit');
+
+		// SLUG URL
+		include('includes/slug.bit');
+
+		// CATEGORIES
+		include('includes/categories.bit');
+
+		// ALLOW COMMENTS
+		include('includes/allow_comments.bit');
+
+		// BUTTONS
+		include('includes/buttons.bit');
+
+	echo Html::form_close();
+echo Html::div_close();
+?>

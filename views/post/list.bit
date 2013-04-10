@@ -1,0 +1,79 @@
+<?php
+echo Html::div_open( array('class'=>'twothird') );
+    if(empty($post_list))
+    {
+    	echo Html::p( array('class'=>'no_comments', 'content'=>$_LANG['THERE_ARE_NO_POSTS']) );
+    }
+    else
+    {
+    
+    	foreach( $post_list as $post )
+    	{
+    		$category = $_DB_CATEGORIES->get( array('id'=>$post['id_cat']) );
+    		$comments = $_DB_COMMENTS->get_list_by_post( array('id_post'=>$post['id']) );
+    
+    		echo '
+    			<div class="post-info cf">
+                    <h4 class="icon-stack">'.(empty($post['title'])?'['.$_LANG['NO_TITLE'].']':$post['title']).'</h4>
+                    <ul class="half">
+                        <li><strong>'.$_LANG['TYPE'].'</strong>: '.$_LANG[strtoupper($post['type'])].'</li>
+                        <li><strong>'.$_LANG['CATEGORY'].'</strong>: '.$category['name'].'</li>
+                    </ul>
+                    <ul class="half">
+                        <li><strong>'.$_LANG['COMMENTS'].'</strong>: '.(count($comments)).'</li>
+                        <li><strong>'.$_LANG['PUBLISH_DATE'].'</strong>: '.Date::format($post['pub_date_unix'], POST_DATE_FORMAT).'</li>
+                    </ul>
+                    <div class="options">
+        				<a class="view" href="'.HTML_PATH_ROOT.'index.php?controller=post&amp;action=view&amp;id_post='.$post['id'].'">'.($post['draft']?$_LANG['PREVIEW']:$_LANG['VIEW']).'</a>
+    					<a class="edit" href="'.HTML_PATH_ROOT.'admin.php?controller=post&amp;action=edit_'.$post['type'].'&amp;id_post='.$post['id'].'">'.$_LANG['EDIT'].'</a>
+    					<a class="js_button_delete" data-flag="0" data-id="'.$post['id'].'" href="javascript:void(0)">'.$_LANG['DELETE'].'</a>
+    				</div>
+                </div>
+    		';
+    	}
+    
+    	// Pager
+    	echo Html::div_open( array('class'=>'pager') );
+    		for( $i=0; $i<$total_pages; $i++ )
+    		{
+    			echo Html::link( array('content'=>$i, 'href'=>HTML_PATH_ROOT.'admin.php?controller=post&amp;action=list&amp;page='.$i) );
+    		}
+    	echo Html::div_close();
+    }
+echo Html::div_close();
+
+echo Html::div_open( array('class'=>'onethird') );
+    include('admin/templates/default/includes/sidebar.bit');
+echo Html::div_close();
+?>
+
+<script>
+
+$(document).ready(function() {
+
+	$("a.js_button_delete").click( function() {
+		var self = $(this);
+		var box = self.parent().parent();
+		var flag = self.attr("data-flag");
+		var id = self.attr("data-id");
+
+		if(flag=="1")
+		{
+			self.removeClass().html("<?php echo $_LANG['LOADING']; ?>");
+
+			if(set_ajax(id, "delete", "posts.php"))
+			{
+				box.fadeOut();
+			}
+		}
+		else
+		{
+			self.attr("data-flag", "1");
+			self.html("<?php echo $_LANG['ARE_YOU_SURE'] ?>");
+			self.parent().parent().parent().css("opacity","0.8");
+		}
+	});
+
+}); // end document
+
+</script>

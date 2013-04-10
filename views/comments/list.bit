@@ -1,0 +1,122 @@
+<?php
+echo Html::div_open( array('class'=>'twothird') );
+    if(empty($comments))
+    {
+    	echo Html::p( array('class'=>'no_comments', 'content'=>$_LANG['THERE_ARE_NO_PUBLISHED_COMMENTS']) );
+    }
+    else
+    {
+    
+    	foreach( $comments as $comment )
+    	{
+    		$post = $_DB_POST->get( array('id'=>$comment['id_post']) );
+    
+    		echo '
+    			<div class="post-info cf">
+    				<p class="icon-bubble">'.$comment['content'].'</p>
+                    <ul class="half">
+                        <li><strong>'.$_LANG['POST'].'</strong>: '.$post['title'].'</li>
+    				    <li><strong>'.$_LANG['AUTHOR'].'</strong>: '.$comment['author_name'].'</li>
+    				    <li><strong>'.$_LANG['EMAIL'].'</strong>: '.$comment['author_email'].'</li>
+                    </ul>
+                    <ul class="half">
+    				    <li><strong>IP</strong>: '.$comment['author_ip'].'</li>
+    				    <li><strong>'.$_LANG['PUBLISH_DATE'].'</strong>: '.Date::format($comment['pub_date_unix'], COMMENT_DATE_FORMAT).'</li>
+                    </ul>
+    				<div class="options">
+    		';
+    
+    		if($comment['type']=='NULL')
+    		{
+    			echo Html::link( array('class'=>'js_button_unapprove', 'data-id'=>$comment['id'], 'content'=>$_LANG['DISAPPROVE']) );
+    		}
+    		else
+    		{
+    			if($comment['type']=='spam')
+    			{
+    				echo Html::link( array('class'=>'js_button_approve', 'data-id'=>$comment['id'], 'content'=>$_LANG['APPROVE_SPAM_DETECTED']) );
+    			}
+    			else
+    			{
+    				echo Html::link( array('class'=>'js_button_approve', 'data-id'=>$comment['id'], 'content'=>$_LANG['APPROVE']) );
+    			}
+    		}
+    		echo Html::link( array('class'=>'js_button_delete', 'data-flag'=>'0', 'data-id'=>$comment['id'], 'content'=>$_LANG['DELETE']) );
+    
+    		echo '
+    				</div>
+    			</div>
+    		';
+    	}
+    
+    	// Pager
+    	echo Html::div_open( array('class'=>'pager') );
+    		for( $i=0; $i<$total_pages; $i++ )
+    		{
+    			echo Html::link( array('content'=>$i, 'href'=>HTML_PATH_ROOT.'admin.php?controller=comments&amp;action=list&amp;page='.$i) );
+    		}
+    	echo Html::div_close();
+    }
+echo Html::div_close();
+
+echo Html::div_open( array('class'=>'onethird') );
+    include('admin/templates/default/includes/sidebar.bit');
+echo Html::div_close();
+?>
+
+<script>
+
+$(document).ready(function() {
+
+	$("div.options").on("click", "a.js_button_approve", function() {
+		var self = $(this);
+		var id = self.attr("data-id");
+
+		self.removeClass().html("<?php echo $_LANG['LOADING']; ?>");
+
+		if(set_ajax(id, "approve", "comments.php"))
+		{
+			self.removeClass().addClass("js_button_unapprove");
+			self.html("<?php echo $_LANG['DISAPPROVE']; ?>");
+		}
+	});
+
+	$("div.options").on("click", "a.js_button_unapprove", function() {
+		var self = $(this);
+		var id = self.attr("data-id");
+
+		self.removeClass().html("<?php echo $_LANG['LOADING']; ?>");
+
+		if(set_ajax(id, "unapprove", "comments.php"))
+		{
+			self.removeClass().addClass("js_button_approve");
+			self.html("<?php echo $_LANG['APPROVE']; ?>");
+		}
+	});
+
+	$("a.js_button_delete").click( function() {
+		var self = $(this);
+		var box = self.parent().parent();
+		var flag = self.attr("data-flag");
+		var id = self.attr("data-id");
+
+		if(flag=="1")
+		{
+			self.removeClass().html("<?php echo $_LANG['LOADING']; ?>");
+
+			if(set_ajax(id, "delete", "comments.php"))
+			{
+				box.fadeOut();
+			}
+		}
+		else
+		{
+			self.attr("data-flag", "1");
+			self.html("<?php echo $_LANG['ARE_YOU_SURE'] ?>");
+			self.addClass("remove");
+		}
+	});
+
+}); // end document
+
+</script>

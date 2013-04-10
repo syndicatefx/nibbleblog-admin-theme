@@ -1,0 +1,87 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <meta charset="utf-8">
+	<meta name='robots' content='noindex,nofollow' />
+
+	<title>Nibbleblog - Dashboard</title>
+	<link rel="stylesheet" type="text/css" href="<?php echo HTML_PATH_ADMIN_TEMPLATES.'default/css/main.css' ?>" />
+
+	<!-- JAVASCRIPT -->
+	<script charset="utf-8" src="<?php echo JS_JQUERY ?>"></script>
+	<script charset="utf-8" src="<?php echo HTML_PATH_ADMIN_JS.'system.php' ?>"></script>
+	<script charset="utf-8" src="<?php echo HTML_PATH_ADMIN_JS.'functions.js' ?>"></script>
+</head>
+<body>
+
+<div id="alert"></div>
+
+<header class="header">
+	<?php include('admin/templates/default/css/img/logo.svg'); ?>
+	<a href="<?php echo HTML_PATH_ROOT ?>" class="icon-eye" title="<?php echo $_LANG['VIEW_BLOG']; ?>"><?php echo $_LANG['VIEW_BLOG']; ?></a>
+	<a href="<?php echo HTML_PATH_ROOT.'admin.php?controller=user&amp;action=logout' ?>" class="icon-switch" title="<?php echo $_LANG['LOGOUT']; ?>"><?php echo $_LANG['LOGOUT']; ?></a>
+</header>
+
+<section class="admin">
+	<nav class="cf">
+		<a class="icon-home active_<?php echo $url['controller'] ?> subactive_<?php echo $url['action'] ?>" href="<?php echo HTML_PATH_ROOT.'admin.php' ?>" title="<?php echo $_LANG['DASHBOARD']; ?>"><?php echo $_LANG['DASHBOARD']; ?></a>
+		<a class="icon-cog active_<?php echo $url['controller'] ?> subactive_<?php echo $url['action'] ?>" href="<?php echo HTML_PATH_ROOT.'admin.php?controller=settings&action=general' ?>" title="<?php echo $_LANG['GENERAL_SETTINGS']; ?>"><?php echo $_LANG['GENERAL_SETTINGS']; ?></a>
+		<div class="quick-links">
+			<a class="icon-pencil active_<?php echo $url['controller'] ?> subactive_<?php echo $url['action'] ?>" href="<?php echo HTML_PATH_ROOT.'admin.php?controller=post&action=new_simple' ?>" title="<?php echo $_LANG['SIMPLE'] ?>"><?php echo $_LANG['SIMPLE'] ?></a>
+			<a class="icon-play active_<?php echo $url['controller'] ?> subactive_<?php echo $url['action'] ?>" href="<?php echo HTML_PATH_ROOT.'admin.php?controller=post&action=new_video' ?>" title="<?php echo $_LANG['VIDEO'] ?>"><?php echo $_LANG['VIDEO'] ?></a>
+			<a class="icon-quotes-left active_<?php echo $url['controller'] ?> subactive_<?php echo $url['action'] ?>" href="<?php echo HTML_PATH_ROOT.'admin.php?controller=post&action=new_quote' ?>" title="<?php echo $_LANG['QUOTE'] ?>"><?php echo $_LANG['QUOTE'] ?></a>
+		</div>
+	</nav>
+
+		<?php
+			// LAYOUT_TITLE defined on controller
+			echo '<h2 class="title active_'.$url['controller'].' subactive_'.$url['action'].'">'.LAYOUT_TITLE.'</h2>';
+		?>
+
+	<div class="wrap">
+		<?php
+			// LAYOUT_VIEW defined on controller
+			include(PATH_ADMIN_VIEW . LAYOUT_VIEW);
+		?>
+	</div>	
+
+</section>
+
+<footer>
+	<p><a href="http://nibbleblog.com">Nibbleblog v<?php echo NIBBLEBLOG_VERSION ?> "<?php echo NIBBLEBLOG_NAME ?>"</a></p>
+</footer>
+
+
+<!-- Alert -->
+<script>
+$(document).ready(function(){
+
+	$("#alert").click(function() {
+		$(this).hide();
+	});
+
+	<?php if(Session::get_error()) { echo 'show_alert("'.Session::get_alert().'",3500);'; } ?>
+
+});
+</script>
+
+<!-- Easter egg -->
+<script>
+$(document).ready(function(){
+
+	$('.header').dblclick(function() {
+		var html = $(this).html();
+		$(this).css("background","url('admin/templates/default/css/img/egg.png') no-repeat scroll 0 50%","float","left");
+        $(this).html("<p>All you need is love or maybe Nibbleblog</p>");
+	});
+	if($(window).width() > 768){
+
+	    if($(".onethird").height() < $(".twothird").innerHeight()){
+	        $(".onethird").height($(".twothird").innerHeight());
+	    };
+	};
+});
+</script>
+
+</body>
+</html>
