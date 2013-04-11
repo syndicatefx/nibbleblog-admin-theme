@@ -172,10 +172,11 @@ a{
     display:none;
     z-index:10;
 }
-.login > #alert {
-    color:#BE1C54;
-    margin-bottom:1em;
+#alert-login {
+    color:#ff6600;
     display:block;
+    text-align:center;
+    margin:1em 0;
 }
 .login h3{
     text-align:center;
