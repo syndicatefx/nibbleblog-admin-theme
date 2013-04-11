@@ -24,7 +24,7 @@
 			// ALERT
 			if( (isset($_SESSION['session_alert'])) && ($_SESSION['session_alert']['active']) )
 			{
-				echo '<div id="alert">'.$_SESSION['session_alert']['msg'].'</div>';
+				echo '<div id="alert-login">'.$_SESSION['session_alert']['msg'].'</div>';
 				$_SESSION['session_alert']['active'] = false;
 			}
 
